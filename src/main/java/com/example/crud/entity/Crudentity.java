@@ -16,6 +16,8 @@ import org.springframework.boot.autoconfigure.web.WebProperties;
 public class Crudentity {
     @Id
     @GeneratedValue(strategy= GenerationType.IDENTITY)
+    private Integer sno;
+
     private Integer Id;
     private String name;
     private String email;

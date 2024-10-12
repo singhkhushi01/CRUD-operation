@@ -32,16 +32,15 @@ public class Crudcontroller {
     @GetMapping("/reading/{x}")
     public ResponseEntity<Crudentity> getParticular(@PathVariable int x){
         Optional<Crudentity> crudentity=crudservice.getParticularUser(x);
-//        if(crudentity.isPresent()){
-//            return ResponseEntity.status(200).build();
-//        }else{
-//            return ResponseEntity.status(400).build();
-//        }
-        return crudentity.map(ResponseEntity::ok)
-                .orElseGet(() -> ResponseEntity.status(HttpStatus.NOT_FOUND).build());
+        if(crudentity.isPresent()){
+            return ResponseEntity.status(200).body(crudentity.get());
+        }else{
+            return ResponseEntity.status(400).build();
+        }
+
     }
     @PutMapping("/update/{id}")
-    public ResponseEntity<Crudentity> updateDetail(@PathVariable int x, @RequestBody Cruddto cruddto){
+    public ResponseEntity<Crudentity> updateDetail(@PathVariable("id") int x, @RequestBody Cruddto cruddto){
         Crudentity crudentity=crudservice.updateUser(x, cruddto);
         if(crudentity!=null)
             return ResponseEntity.status(200).body(crudentity);
