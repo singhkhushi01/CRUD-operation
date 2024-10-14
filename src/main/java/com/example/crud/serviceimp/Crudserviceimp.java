@@ -62,5 +62,29 @@ public class Crudserviceimp implements Crudservice {
         crudrepo.deleteById(id);
     }
 
+    @Override
+    public Optional<Crudentity> getParticularName(String name) {
+        return crudrepo.findUserByName(name);
+    }
+
+    @Override
+    public Crudentity patchUser(int id, Cruddto cruddto) {
+        Optional<Crudentity> existingUser=crudrepo.findById(id);
+        if(existingUser.isPresent()){
+            Crudentity crudentity=existingUser.get();
+            if(cruddto.getName()!=null){
+                crudentity.setName(cruddto.getName());
+            }
+            if(cruddto.getEmail()!=null){
+                crudentity.setEmail(cruddto.getEmail());
+            }
+            if(cruddto.getPassword()!=null){
+                crudentity.setPassword(cruddto.getPassword());
+            }
+            return crudrepo.save(crudentity);
+        }
+        return null;
+    }
+
 
 }

@@ -14,4 +14,7 @@ public interface Crudservice {
     Optional<Crudentity> getParticularUser(int x);
     Crudentity updateUser(int x,Cruddto cruddto);
     void deleteUser(int id);
+    Optional<Crudentity> getParticularName(String name);
+
+    Crudentity patchUser(int id, Cruddto cruddto);
 }

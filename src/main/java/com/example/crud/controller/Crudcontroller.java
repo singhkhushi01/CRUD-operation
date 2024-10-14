@@ -9,9 +9,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
 @RestController
 @RequestMapping("/api")
@@ -39,19 +37,44 @@ public class Crudcontroller {
         }
 
     }
+
     @PutMapping("/update/{id}")
     public ResponseEntity<Crudentity> updateDetail(@PathVariable("id") int x, @RequestBody Cruddto cruddto){
         Crudentity crudentity=crudservice.updateUser(x, cruddto);
         if(crudentity!=null)
             return ResponseEntity.status(200).body(crudentity);
         else
-            return ResponseEntity.status(400).build();
+            return ResponseEntity.status(404).build();
     }
 
     @DeleteMapping("/delete/{id}")
-    public ResponseEntity<Void> deleteUser(@PathVariable int id){
+    public ResponseEntity<Map<String, String>> deleteUser(@PathVariable int id){
         crudservice.deleteUser(id);
-        return ResponseEntity.noContent().build();
+
+        Map<String,String> map=new HashMap<>();
+        map.put("Status","Successful");
+        return new ResponseEntity<>(map,HttpStatus.OK);
+    }
+
+    @GetMapping("/readbyname")
+    public ResponseEntity<Crudentity> getByName(@RequestParam String name){
+        Optional<Crudentity> crudentity=crudservice.getParticularName(name);
+        if(crudentity.isPresent()){
+            return ResponseEntity.status(200).body(crudentity.get());
+        }else{
+            return ResponseEntity.status(404).build();
+        }
+    }
+
+    @PatchMapping("/patching/{x}")
+    public ResponseEntity<Crudentity> patching(@PathVariable("x") int id,@RequestBody Cruddto cruddto){
+        Crudentity crudentity=crudservice.patchUser(id,cruddto);
+        if(crudentity!=null){
+            return ResponseEntity.status(200).body(crudentity);
+        }else{
+
+            return ResponseEntity.status(404).build();
+        }
     }
 
 }
